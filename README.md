@@ -1,0 +1,2 @@
+# qgs
+QuickGit(H)ubSearch
