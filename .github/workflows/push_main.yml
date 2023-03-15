@@ -30,7 +30,7 @@ jobs:
 
   build:
     needs: release
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         arch: ["aarch64-apple-darwin", "x86_64-apple-darwin"]
