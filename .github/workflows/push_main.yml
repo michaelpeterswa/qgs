@@ -1,0 +1,63 @@
+---
+name: Release Version
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: 'Release to GitHub'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install Semantic Release Plugins
+        run: npm install --save-dev @semantic-release/changelog @semantic-release/git conventional-changelog-conventionalcommits  # yamllint disable-line rule:line-length
+
+      - name: Release Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_RELEASE_PAT }}
+        run: npx semantic-release
+
+  build:
+    needs: release
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          arch: ["aarch64-apple-darwin", "x86_64-apple-darwin"]
+      
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.arch }}
+      
+      - name: Build Binary
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target ${{ matrix.arch }}
+      
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      
+      - name: Upload Binary to Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ steps.previoustag.outputs.tag }} target/${{ matrix.arch }}/release/qgs
+
+
