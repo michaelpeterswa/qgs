@@ -32,13 +32,13 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     strategy:
-        matrix:
-          arch: ["aarch64-apple-darwin", "x86_64-apple-darwin"]
+      matrix:
+        arch: ["aarch64-apple-darwin", "x86_64-apple-darwin"]
 
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+          fetch-depth: 0
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -58,4 +58,4 @@ jobs:
       - name: Upload Binary to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.previoustag.outputs.tag }} target/${{ matrix.arch }}/release/qgs
+        run: gh release upload ${{ steps.previoustag.outputs.tag }} target/${{ matrix.arch }}/release/qgs # yamllint disable-line rule:line-length
