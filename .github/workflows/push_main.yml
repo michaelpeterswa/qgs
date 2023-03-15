@@ -34,7 +34,7 @@ jobs:
     strategy:
         matrix:
           arch: ["aarch64-apple-darwin", "x86_64-apple-darwin"]
-      
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -44,17 +44,17 @@ jobs:
         with:
           toolchain: stable
           target: ${{ matrix.arch }}
-      
+
       - name: Build Binary
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --target ${{ matrix.arch }}
-      
+
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      
+
       - name: Upload Binary to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

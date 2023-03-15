@@ -55,7 +55,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: test
-  
+
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
         with:
           command: fmt
           args: --all -- --check
-  
+
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
