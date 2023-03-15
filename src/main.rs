@@ -9,7 +9,7 @@ fn main() {
         Err(_e) => "".to_string(),
     };
 
-    if browser.len() == 0 {
+    if browser.is_empty() {
         println!("Please Set $BROWSER Environment Variable");
         return;
     }
