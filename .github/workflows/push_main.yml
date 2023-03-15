@@ -59,5 +59,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ steps.previoustag.outputs.tag }} target/${{ matrix.arch }}/release/qgs
-
-
