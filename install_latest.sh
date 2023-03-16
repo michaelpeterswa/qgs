@@ -16,6 +16,8 @@ if [ $DISTRO != "Darwin" ]; then
     exit 1
 fi
 
+
+
 get_latest () {
     RESP=$(curl -s https://api.github.com/repos/michaelpeterswa/qgs/releases/latest)
     VERSION=$(echo $RESP | jq -r '.tag_name')
@@ -25,10 +27,10 @@ get_latest () {
     echo "Downloading $VERSION for $1"
     echo "Link: $LINK"
 
-    curl -fsSL -o /usr/local/bin/qgs $LINK
+    sudo curl -fSL -o /usr/local/bin/qgs $LINK
     echo "Downloaded to /usr/local/bin/qgs"
 
-    chmod +x /usr/local/bin/qgs
+    sudo chmod +x /usr/local/bin/qgs
     echo "Changed permissions to +x"
 }
 
