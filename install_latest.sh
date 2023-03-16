@@ -16,8 +16,6 @@ if [ $DISTRO != "Darwin" ]; then
     exit 1
 fi
 
-
-
 get_latest () {
     RESP=$(curl -s https://api.github.com/repos/michaelpeterswa/qgs/releases/latest)
     VERSION=$(echo $RESP | jq -r '.tag_name')
